@@ -10,6 +10,8 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+let mapleader = "\<Space>"
+
 " Vim Plug plugins
 call plug#begin()
 Plug 'tpope/vim-sensible'
@@ -32,6 +34,7 @@ Plug 'thaerkh/vim-indentguides'
 " Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'thaerkh/vim-workspace'
 Plug 'junegunn/goyo.vim'
+Plug 'rizzatti/dash.vim'
 
 " Themeing
 Plug 'vim-airline/vim-airline'
@@ -185,6 +188,22 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 " _ switches to last buffer if in netrw, opens netrw in a split if not
 nnoremap <expr> _ &ft ==# "netrw" ? "<C-^>" : ":vertical Vexplore<CR>\|:vertical resize 45<CR>"
 
+
+" Leader key remaps
+" Look up visual selection in Dash (in dataset according to filetype)
+xnoremap <silent><nowait> <leader>d <Esc>:execute "Dash" getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]<CR>
+" Look up visual selection in Dash (in global dataset)
+xnoremap <silent><nowait> <leader>D <Esc>:execute "Dash!" getline("'<")[getpos("'<")[2]-1:getpos("'>")[2]-1]<CR>
+" Look up word under cursor in Dash (local dataset)
+nnoremap <silent><nowait> <leader>d <Esc>:Dash<CR>
+" Look up word under cursor in Dash (global dataset)
+nnoremap <silent><nowait> <leader>D <Esc>:Dash!<CR>
+
+" Space-Wincmd
+nnoremap <silent><nowait> <leader>w <C-w>
+nnoremap <silent><nowait> <leader>q <C-w>q
+
+
 " Use `[g` and `]g` to navigate diagnostics
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
@@ -235,7 +254,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
 " Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
