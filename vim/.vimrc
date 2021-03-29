@@ -1,134 +1,22 @@
 set encoding=UTF-8
 set nocompatible              " be iMproved, required
-set cursorline
 set termguicolors
-
-" Automatically download vim-plug if it is not yet installed
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-
-let mapleader = "\<Space>"
-
-" Vim Plug plugins
-call plug#begin()
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-commentary'
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-" Visual Aids
-Plug 'airblade/vim-gitgutter'
-Plug 'thaerkh/vim-indentguides'
-
-" FileTree and Workspaces
-" Plug 'preservim/nerdtree'
-" Plug 'scrooloose/nerdtree-project-plugin'
-" Plug 'Xuyuanp/nerdtree-git-plugin'
-" Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'thaerkh/vim-workspace'
-Plug 'junegunn/goyo.vim'
-Plug 'rizzatti/dash.vim'
-
-" Themeing
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'connorholyday/vim-snazzy'
-
-" Autocomplete and Syntax Highlighting
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'pangloss/vim-javascript'    " JavaScript support
-Plug 'leafgarland/typescript-vim' " TypeScript syntax
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-Plug 'jparise/vim-graphql'        " GraphQL syntax
-Plug 'editorconfig/editorconfig-vim'
-
-" Devicons has to be the last plugin to be loaded.
-Plug 'ryanoasis/vim-devicons'
-call plug#end()
-
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-colorscheme snazzy
-let g:airline_theme = 'base16_snazzy'
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-prettier', 'coc-json', 'coc-css' ]
-
-" " NERDTree Customizations
-" let g:NERDTreeGitStatusIndicatorMapCustom = {
-"                 \ 'Modified'  :'✹',
-"                 \ 'Staged'    :'✚',
-"                 \ 'Untracked' :'✭',
-"                 \ 'Renamed'   :'➜',
-"                 \ 'Unmerged'  :'═',
-"                 \ 'Deleted'   :'✖',
-"                 \ 'Dirty'     :'✗',
-"                 \ 'Ignored'   :'☒',
-"                 \ 'Clean'     :'✔︎',
-"                 \ 'Unknown'   :'?',
-"                 \ }
-" let g:NERDTreeGitStatusShowIgnored = 0 " a heavy feature may cost much more time. default: 0
-" let g:NERDTreeGitStatusUntrackedFilesMode = 'all' " a heave feature too. default: normal
-" let g:NERDTreeGitStatusShowClean = 1 " default: 0
-" let g:NERDTreeGitStatusConcealBrackets = 1 " default: 0
-
-" Vim Workspaces
-let g:workspace_create_new_tabs = 0  " enabled = 1 (default), disabled = 0
-nnoremap <leader>s :ToggleWorkspace<CR>
-let g:workspace_session_directory = $HOME . '/.vim/sessions/'
-let g:workspace_persist_undo_history = 1
-let g:workspace_undodir='.undodir'
-let g:workspace_autosave_always = 1
-
-" Override theme-specific background colors.
-hi Normal guibg=NONE ctermbg=NONE
-hi LineNr guibg=NONE ctermbg=NONE
-hi SignColumn guibg=NONE ctermbg=NONE
-hi EndOfBuffer guifg=#3A3B48 guibg=NONE ctermfg=NONE ctermbg=NONE
-hi CursorLine guibg=#3A3B48 ctermbg=NONE
-
-" Change Color when entering Insert Mode
-autocmd InsertEnter * set nocursorline
-
-" Revert Color to default when leaving Insert Mode
-autocmd InsertLeave * set cursorline
-
-" Open NERDTree on vim open.
-" autocmd VimEnter * NERDTree | wincmd p
-" Exit Vim if NERDTree is the only window left.
-" autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    " \ quit | endif
-
-" If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
-" autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
-"    \ let buf=bufnr() | buffer# | execute "normal! \<C-W>w" | execute 'buffer'.buf | endif
-
-" Open the existing NERDTree on each new tab.
-" autocmd BufWinEnter * silent NERDTreeMirror
-
 set number relativenumber
 
+set cursorline
+
+" Disable cursor line when entering Insert Mode
+autocmd InsertEnter * set nocursorline
+
+" Enable cursor line when leaving Insert Mode
+autocmd InsertLeave * set cursorline
+
+" Switch between line numbering.
 augroup numbertoggle
   autocmd!
   autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
   autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
 augroup END
-
-" " Key Mappings
-" " Switch between window panes with Ctrl-Key
-" nmap <silent> <C-Up> :wincmd k<CR>
-" nmap <silent> <C-Down> :wincmd j<CR>
-" nmap <silent> <C-Left> :wincmd h<CR>
-" nmap <silent> <C-Right> :wincmd l<CR>
-
-" Set internal encoding of vim, not needed on neovim, since coc.nvim using some
-" unicode characters in the file autoload/float.vim
-set encoding=utf-8
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -150,14 +38,130 @@ set shortmess+=c
 " Change vertical split character to be full row height.
 set fillchars+=vert:│
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
+" Always show a sign column for git gutter etc.
+set signcolumn=yes
+
+" Automatically download vim-plug if it is not yet installed
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+let mapleader = "\<Space>"
+
+" Vim Plug plugins
+call plug#begin()
+Plug 'tpope/vim-sensible' " Sensible defaults for vim
+Plug 'tpope/vim-surround' " Provides a surround object to operate on
+Plug 'tpope/vim-fugitive' " Git in vim
+Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
+Plug 'tpope/vim-commentary' " Helps with commenting out lines, blocks etc
+Plug 'tpope/vim-repeat' " Enables plugin repeating
+Plug 'tpope/vim-speeddating' " Date manipulation.
+
+Plug 'svermeulen/vim-subversive'
+Plug 'svermeulen/vim-yoink'
+Plug 'svermeulen/vim-cutlass'
+
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim' " Fuzzy file finder
+
+" Visual Aids
+Plug 'airblade/vim-gitgutter' " Git status in linenr column
+Plug 'thaerkh/vim-indentguides'
+
+Plug 'thaerkh/vim-workspace'
+Plug 'junegunn/goyo.vim'
+Plug 'rizzatti/dash.vim'
+
+" Themeing
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'connorholyday/vim-snazzy'
+
+" Autocomplete and Syntax Highlighting
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pangloss/vim-javascript'    " JavaScript support
+Plug 'leafgarland/typescript-vim' " TypeScript syntax
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'jparise/vim-graphql'        " GraphQL syntax
+Plug 'editorconfig/editorconfig-vim'
+
+" Devicons has to be the last plugin to be loaded.
+Plug 'ryanoasis/vim-devicons'
+call plug#end()
+
+let g:yoinkIncludeDeleteOperations = 1
+let g:yoinkSyncSystemClipboardOnFocus = 0
+
+" m now becomes "move" - yoink and delete
+nnoremap m d
+xnoremap m d
+
+nnoremap mm dd
+nnoremap M D
+
+nmap <c-n> <plug>(YoinkPostPasteSwapBack)
+nmap <c-p> <plug>(YoinkPostPasteSwapForward)
+
+nmap p <plug>(YoinkPaste_p)
+nmap P <plug>(YoinkPaste_P)
+
+" Rotate through yank buffer using leader-y and leader-u
+nmap <silent><nowait> <leader>y <plug>(YoinkRotateBack)
+nmap <silent><nowait> <leader>u <plug>(YoinkRotateForward)
+
+" Override theme-specific background colors to match terminal background.
+hi Normal guibg=NONE ctermbg=NONE
+hi LineNr guibg=NONE ctermbg=NONE
+hi SignColumn guibg=NONE ctermbg=NONE
+hi EndOfBuffer guifg=#3A3B48 guibg=NONE ctermfg=NONE ctermbg=NONE
+hi CursorLine guibg=#3A3B48 ctermbg=NONE
+
+colorscheme snazzy
+let g:airline_theme = 'base16_snazzy'
+
+" I don't know what this does.
+" Should figure it out eventually.
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-prettier', 'coc-json', 'coc-css' ]
+
+" Vim Workspaces
+let g:workspace_create_new_tabs = 0  " enabled = 1 (default), disabled = 0
+nnoremap <leader>S :ToggleWorkspace<CR>
+let g:workspace_session_directory = $HOME . '/.vim/sessions/'
+let g:workspace_persist_undo_history = 1
+let g:workspace_undodir='.undodir'
+let g:workspace_autosave_always = 1
+
+" Change cursor in various modes. This setting is for iTerm2 on macOS only.
+" https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
+" 0: Block
+" 1: Vertical bar
+" 2: Underline
+if $TERM_PROGRAM =~ "iTerm"
+  let &t_SI = "\<Esc>]1337;CursorShape=1\x7" " Insert mode
+  let &t_EI = "\<Esc>]1337;CursorShape=2\x7" " Normal mode
+endif
+
+" Map scrolling down/up to a more comfortable location.
+nnoremap <silent><nowait> <c-j> <c-d>
+nnoremap <silent><nowait> <c-k> <c-u>
+
+" Vertical resize window with ctrl-, and ctrl-.
+nnoremap <silent><nowait> <c-,> :vertical resize +5
+nnoremap <silent><nowait> <c-.> :vertical resize +5
+
+" Open and close tabs with leader t/T
+nnoremap <silent><nowait> <leader>t :tabe
+nnoremap <silent><nowait> <leader>T :tabc
+
+" Move between tabs with leader R/Y
+nnoremap <silent><nowait> <leader>Y gt
+nnoremap <silent><nowait> <leader>R gT
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -253,8 +257,6 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-" nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -267,21 +269,6 @@ omap ic <Plug>(coc-classobj-i)
 xmap ac <Plug>(coc-classobj-a)
 omap ac <Plug>(coc-classobj-a)
 
-" Remap <C-f> and <C-b> for scroll float windows/popups.
-if has('nvim-0.4.0') || has('patch-8.2.0750')
-  nnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  nnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-  inoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
-  inoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
-  vnoremap <silent><nowait><expr> <C-f> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
-  vnoremap <silent><nowait><expr> <C-b> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
-endif
-
-" Use CTRL-S for selections ranges.
-" Requires 'textDocument/selectionRange' support of language server.
-nmap <silent> <C-s> <Plug>(coc-range-select)
-xmap <silent> <C-s> <Plug>(coc-range-select)
-
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
 
@@ -290,11 +277,6 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings for CoCList
 " Show all diagnostics.
