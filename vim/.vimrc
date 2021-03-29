@@ -55,7 +55,6 @@ call plug#begin()
 Plug 'tpope/vim-sensible' " Sensible defaults for vim
 Plug 'tpope/vim-surround' " Provides a surround object to operate on
 Plug 'tpope/vim-fugitive' " Git in vim
-Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
 Plug 'tpope/vim-commentary' " Helps with commenting out lines, blocks etc
 Plug 'tpope/vim-repeat' " Enables plugin repeating
 Plug 'tpope/vim-speeddating' " Date manipulation.
@@ -88,12 +87,16 @@ Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'jparise/vim-graphql'        " GraphQL syntax
 Plug 'editorconfig/editorconfig-vim'
 
+Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
 " Devicons has to be the last plugin to be loaded.
 Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 let g:yoinkIncludeDeleteOperations = 1
 let g:yoinkSyncSystemClipboardOnFocus = 0
+
+" Make netrw have a tree view
+let g:netrw_liststyle = 3
 
 " m now becomes "move" - yoink and delete
 nnoremap m d
@@ -109,8 +112,8 @@ nmap p <plug>(YoinkPaste_p)
 nmap P <plug>(YoinkPaste_P)
 
 " Rotate through yank buffer using leader-y and leader-u
-nmap <silent><nowait> <leader>y <plug>(YoinkRotateBack)
-nmap <silent><nowait> <leader>u <plug>(YoinkRotateForward)
+nmap <silent><nowait> <leader>y <plug>(YoinkRotateForward)
+nmap <silent><nowait> <leader>r <plug>(YoinkRotateBack)
 
 " Override theme-specific background colors to match terminal background.
 hi Normal guibg=NONE ctermbg=NONE
@@ -152,12 +155,12 @@ nnoremap <silent><nowait> <c-j> <c-d>
 nnoremap <silent><nowait> <c-k> <c-u>
 
 " Vertical resize window with ctrl-, and ctrl-.
-nnoremap <silent><nowait> <c-,> :vertical resize +5
-nnoremap <silent><nowait> <c-.> :vertical resize +5
+nnoremap <silent><nowait> ß :vertical resize +5<CR>
+nnoremap <silent><nowait> <c-l> :vertical resize -5<CR>
 
 " Open and close tabs with leader t/T
-nnoremap <silent><nowait> <leader>t :tabe
-nnoremap <silent><nowait> <leader>T :tabc
+nnoremap <silent><nowait> <leader>t :tabe<CR>
+nnoremap <silent><nowait> <leader>T :tabc<CR>
 
 " Move between tabs with leader R/Y
 nnoremap <silent><nowait> <leader>Y gt
@@ -189,8 +192,9 @@ endif
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-" _ switches to last buffer if in netrw, opens netrw in a split if not
-nnoremap <expr> _ &ft ==# "netrw" ? "<C-^>" : ":vertical Vexplore<CR>\|:vertical resize 45<CR>"
+" _ switches to last buffer if in netrw, opens netrw in a split on the left
+" hand side of the window if not
+nnoremap <expr> _ &ft ==# "netrw" ? "<C-^>" : ":vertical Lexplore<CR>\|:vertical resize 45<CR>"
 
 
 " Leader key remaps
@@ -236,7 +240,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+" nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
