@@ -1,8 +1,6 @@
 # Silver's Dotfiles
+
 Dotfiles for the programs I use most frequently for development.
-
-
-
 
 ## How do I get these for myself?
 

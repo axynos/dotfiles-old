@@ -52,6 +52,7 @@ let mapleader = "\<Space>"
 
 " Vim Plug plugins
 call plug#begin()
+
 Plug 'tpope/vim-sensible' " Sensible defaults for vim
 Plug 'tpope/vim-surround' " Provides a surround object to operate on
 Plug 'tpope/vim-fugitive' " Git in vim
@@ -63,15 +64,18 @@ Plug 'svermeulen/vim-subversive'
 Plug 'svermeulen/vim-yoink'
 Plug 'svermeulen/vim-cutlass'
 
+Plug 'matze/vim-move'
+Plug 'junegunn/limelight.vim'
+Plug 'junegunn/goyo.vim'
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim' " Fuzzy file finder
 
 " Visual Aids
 Plug 'airblade/vim-gitgutter' " Git status in linenr column
-Plug 'thaerkh/vim-indentguides'
+" Plug 'nathanaelkane/vim-indent-guides'
 
 Plug 'thaerkh/vim-workspace'
-Plug 'junegunn/goyo.vim'
 Plug 'rizzatti/dash.vim'
 
 " Themeing
@@ -86,11 +90,30 @@ Plug 'leafgarland/typescript-vim' " TypeScript syntax
 Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'jparise/vim-graphql'        " GraphQL syntax
 Plug 'editorconfig/editorconfig-vim'
+Plug 'lifepillar/pgsql.vim'       " PostgreSQL syntax and autocomplete.
 
 Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
 " Devicons has to be the last plugin to be loaded.
 Plug 'ryanoasis/vim-devicons'
+
 call plug#end()
+
+" Indent options aka controversial programming choices
+" sw - shift-width
+" sts - soft tab stop
+" et - expandtab
+set sw=2 sts=2 et
+
+au FileType python setlocal et sw=4 sts=4 smartindent
+
+" Make indenting more intuitive in normal mode.
+nnoremap <silent> <Tab> >>
+nnoremap <silent> <S-Tab> <<
+
+
+
+" vim-move custom modifiers. Shift + hjkl moves line/selection.
+let g:move_key_modifier = 'S'
 
 let g:yoinkIncludeDeleteOperations = 1
 let g:yoinkSyncSystemClipboardOnFocus = 0
@@ -115,6 +138,13 @@ nmap P <plug>(YoinkPaste_P)
 nmap <silent><nowait> <leader>y <plug>(YoinkRotateForward)
 nmap <silent><nowait> <leader>r <plug>(YoinkRotateBack)
 
+" Toggle limelight in normal mode.
+nnoremap <silent><leader>l :Limelight!!<cr>
+
+" Toggle goyo with default settings
+nnoremap <silent><leader>g :Goyo<cr>
+let g:goyo_width = 120
+
 " Override theme-specific background colors to match terminal background.
 hi Normal guibg=NONE ctermbg=NONE
 hi LineNr guibg=NONE ctermbg=NONE
@@ -130,7 +160,7 @@ let g:airline_theme = 'base16_snazzy'
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-prettier', 'coc-json', 'coc-css' ]
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-json', 'coc-css' ]
 
 " Vim Workspaces
 let g:workspace_create_new_tabs = 0  " enabled = 1 (default), disabled = 0
@@ -224,7 +254,7 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
 " Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> <leader>K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)

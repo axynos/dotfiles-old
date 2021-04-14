@@ -42,20 +42,45 @@ export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I$(brew --prefix tcl-tk)/i
                               --with-tcltk-libs='-L$(brew --prefix tcl-tk)/lib -ltcl8.6 -ltk8.6'"
 eval "$(pyenv init -)"
 
-# Set up random utility aliases
+# Aliases
 alias fitbit='npx fitbit'
 alias fitbit-build='npx fitbit-build'
 
+alias oopdb-root="ssh root@178.128.248.36"
+alias oopdb="ssh oopdb@178.128.248.36"
+
 alias rpi-local="ssh pi@raspberrypi.local"
 alias rpi-remote="ssh pi@80.235.121.44 -p 69"
-alias monitor-nbt-local="echo 'Connecting to NBT on local Raspberry Pi...';ssh pi@raspberrypi.local -t 'bash -ic \"pm2 dashboard\"'"
-alias monitor-nbt-remote="echo 'Connecting to NBT on remote Raspberry Pi...';ssh pi@80.235.121.44 -p 69 -t 'bash -ic \"pm2 dashboard\"'"
+
 alias discover-network="(ping 192.168.1.255 -c 10) > /dev/null; echo 'Broadcast to network complete.'"
 
 alias cls='clear'
 alias cl='clear'
 
+# Override cat with syntax highlighting.
+alias cat='bat'
+
+# Fast access to common dotfiles
+alias zshconf='vim ~/.zshrc'
+alias vimconf='vim ~/.vimrc'
+
+# Initialize 'fuck' command and add a touch of slavness.
 eval $(thefuck --alias)
+alias bljad='fuck'
+
+# Faster file browsing.
+# Reference: https://youtu.be/eLEo4OQ-cuQ?t=490
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
 
 # Update PATH for the Google Cloud SDK.
 if [ -f '/Users/axynos/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/axynos/google-cloud-sdk/path.zsh.inc'; fi
