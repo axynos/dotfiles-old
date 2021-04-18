@@ -1,5 +1,5 @@
-# Path to oh-my-zsh installation.
-export ZSH="/Users/axynos/.oh-my-zsh"
+# Path to oh-my-zsh installation, not dependent on current user.
+export ZSH="$HOME/.oh-my-zsh"
 
 # More themes available at
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
