@@ -1,6 +1,9 @@
 # Path to oh-my-zsh installation, not dependent on current user.
 export ZSH="$HOME/.oh-my-zsh"
 
+# Profizer for ZSH
+# zmodload zsh/zprof
+
 # More themes available at
 # https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
@@ -10,63 +13,70 @@ COMPLETION_WAITING_DOTS="true"
 
 	# Command history timestamp format.
 # Comment out to disable history timestamps.
-HIST_STAMPS="dd/mm/yyyy"
+# HIST_STAMPS="dd/mm/yyyy"
+
+export NVM_LAZY_LOAD=true
+export NVM_COMPLETION=true
+export NVM_LAZY_LOAD_EXTRA_COMMANDS=('nvim')
+
+autoload -Uz compinit
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C
 
 # Which plugins should be loaded?
 plugins=(
+  zsh-nvm
+  evalcache
   git
+  macos
   zsh-syntax-highlighting
   yarn-completion
 )
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
-fi
+# SSH shorthand
+alias rpi-local="ssh pi@raspberrypi.local"
+alias rpi-remote="ssh pi@90.190.22.45 -p 69"
+alias axynos-remote="ssh axynos-remote"
 
-# NVM
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias cls='clear'
 
-export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
-export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
-export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig"
-export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I$(brew --prefix tcl-tk)/include' \
-                              --with-tcltk-libs='-L$(brew --prefix tcl-tk)/lib -ltcl8.6 -ltk8.6'"
-eval "$(pyenv init -)"
+# Cat aliases
+alias cat='bat'                   # switch out cat for bat (syntax highlighting in cat)
+alias imgcat='~/cli-tools/imgcat' # show images in compatible consoles
 
-# Aliases
+# Fast access to common dotfiles
+alias zshconf='nvim ~/.zshrc'
+alias vimconf='nvim ~/.vimrc'
+alias nvimconf='nvim ~/.config/.nvim'
+alias reload='exec zsh'
+
+# QOL
+alias start='./start.sh'
+
+# Git specific aliases
+alias yoink='git pull'
+alias yeet='git push'
+alias pull='git pull'
+alias push='git push'
+
+# JS/TS specific aliases
+alias prisma='yarn prisma'
+
+# Fitbit aliases
 alias fitbit='npx fitbit'
 alias fitbit-build='npx fitbit-build'
 
-alias oopdb-root="ssh root@178.128.248.36"
-alias oopdb="ssh oopdb@178.128.248.36"
-
-alias rpi-local="ssh pi@raspberrypi.local"
-alias rpi-remote="ssh pi@80.235.121.44 -p 69"
-
-alias discover-network="(ping 192.168.1.255 -c 10) > /dev/null; echo 'Broadcast to network complete.'"
-
-alias cls='clear'
-alias cl='clear'
-
-# Override cat with syntax highlighting.
-alias cat='bat'
-
-# Fast access to common dotfiles
-alias zshconf='vim ~/.zshrc'
-alias vimconf='vim ~/.vimrc'
-
-# Initialize 'fuck' command and add a touch of slavness.
-eval $(thefuck --alias)
+# Add spice to fuckups
 alias bljad='fuck'
+alias rtfm='man'
+
+alias please='sudo!!'
+
+alias luamake=/Users/axynos/Development/tools/lua-language-server/3rd/luamake/luamake
 
 # Faster file browsing.
 # Reference: https://youtu.be/eLEo4OQ-cuQ?t=490
@@ -82,20 +92,33 @@ lfcd () {
 }
 bindkey -s '^o' 'lfcd\n'
 
-# Update PATH for the Google Cloud SDK.
-if [ -f '/Users/axynos/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/axynos/google-cloud-sdk/path.zsh.inc'; fi
+# Start the ssh agent
+# Consider switching to ssh-ident
+# https://github.com/ccontavalli/ssh-ident
+# ssh-agent -s
 
-# Enable shell command completion for gcloud.
-if [ -f '/Users/axynos/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/axynos/google-cloud-sdk/completion.zsh.inc'; fi
+# User configuration
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='nvim'
+fi
 
-# Jenv init
 export PATH="$HOME/.jenv/bin:$PATH"
-eval "$(jenv init -)"
-
-# Created by `userpath` on 2020-12-26 18:08:03
 export PATH="$PATH:/Users/axynos/.local/bin"
 export PATH="/usr/local/opt/libpq/bin:$PATH"
+export PATH="$HOME/Development/tools/cli:$PATH"
+# export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
+# export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
+export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig"
+export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I$(brew --prefix tcl-tk)/include' \
+                              --with-tcltk-libs='-L$(brew --prefix tcl-tk)/lib -ltcl8.6 -ltk8.6'"
 
-# Start the ssh agent
-ssh-agent -s
-cl
+_evalcache thefuck --alias
+eval "$(pyenv init --path)"
+eval "$(pyenv virtualenv-init -)"
+# _evalcache jenv init -
+
+clear
