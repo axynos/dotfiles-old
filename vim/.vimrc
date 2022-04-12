@@ -59,6 +59,10 @@ Plug 'tpope/vim-fugitive' " Git in vim
 Plug 'tpope/vim-commentary' " Helps with commenting out lines, blocks etc
 Plug 'tpope/vim-repeat' " Enables plugin repeating
 Plug 'tpope/vim-speeddating' " Date manipulation.
+Plug 'tpope/vim-jdaddy' " JSON manipulation and pretty printing
+Plug 'chaoren/vim-wordmotion' " Adds more word motions to allow better pascal case etc navigation.
+Plug 'wellle/targets.vim' " Adds additional targets
+Plug 'godlygeek/tabular' " Makes aligning text much easier
 
 Plug 'svermeulen/vim-subversive'
 Plug 'svermeulen/vim-yoink'
@@ -67,7 +71,9 @@ Plug 'svermeulen/vim-cutlass'
 Plug 'matze/vim-move'
 Plug 'junegunn/limelight.vim'
 Plug 'junegunn/goyo.vim'
+Plug 'TaDaa/vimade'
 
+" Install ag - the_silver_searcher on mac for the following to work.
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim' " Fuzzy file finder
 
@@ -91,6 +97,8 @@ Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'jparise/vim-graphql'        " GraphQL syntax
 Plug 'editorconfig/editorconfig-vim'
 Plug 'lifepillar/pgsql.vim'       " PostgreSQL syntax and autocomplete.
+Plug 'honza/vim-snippets'
+Plug 'pantharshit00/vim-prisma'
 
 Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
 " Devicons has to be the last plugin to be loaded.
@@ -110,8 +118,6 @@ au FileType python setlocal et sw=4 sts=4 smartindent
 nnoremap <silent> <Tab> >>
 nnoremap <silent> <S-Tab> <<
 
-
-
 " vim-move custom modifiers. Shift + hjkl moves line/selection.
 let g:move_key_modifier = 'S'
 
@@ -120,6 +126,10 @@ let g:yoinkSyncSystemClipboardOnFocus = 0
 
 " Make netrw have a tree view
 let g:netrw_liststyle = 3
+
+" Made inactive splits more readable
+let g:vimade = {}
+let g:vimade.fadelevel = 0.6
 
 " m now becomes "move" - yoink and delete
 nnoremap m d
@@ -160,7 +170,7 @@ let g:airline_theme = 'base16_snazzy'
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
-let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-json', 'coc-css' ]
+let g:coc_global_extensions = [ 'coc-tsserver', 'coc-pairs', 'coc-json', 'coc-css', 'coc-snippets' ]
 
 " Vim Workspaces
 let g:workspace_create_new_tabs = 0  " enabled = 1 (default), disabled = 0
@@ -184,13 +194,24 @@ endif
 nnoremap <silent><nowait> <c-j> <c-d>
 nnoremap <silent><nowait> <c-k> <c-u>
 
-" Vertical resize window with ctrl-, and ctrl-.
-nnoremap <silent><nowait> ß :vertical resize +5<CR>
-nnoremap <silent><nowait> <c-l> :vertical resize -5<CR>
-
 " Open and close tabs with leader t/T
 nnoremap <silent><nowait> <leader>t :tabe<CR>
 nnoremap <silent><nowait> <leader>T :tabc<CR>
+
+" Enable moving of tabs with keyboard shortcuts.
+" nnoremap <silent><nowait> <C-r> :tabmove -<CR>
+" nnoremap <silent><nowait> <C-y> :tabmove +<CR>
+
+nnoremap <silent><nowait> <leader>1 1gt
+nnoremap <silent><nowait> <leader>2 2gt
+nnoremap <silent><nowait> <leader>3 3gt
+nnoremap <silent><nowait> <leader>4 4gt
+nnoremap <silent><nowait> <leader>5 5gt
+nnoremap <silent><nowait> <leader>6 6gt
+nnoremap <silent><nowait> <leader>7 7gt
+nnoremap <silent><nowait> <leader>8 8gt
+nnoremap <silent><nowait> <leader>9 9gt
+nnoremap <silent><nowait> <leader>0 10gt
 
 " Move between tabs with leader R/Y
 nnoremap <silent><nowait> <leader>Y gt
@@ -226,6 +247,11 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 " hand side of the window if not
 nnoremap <expr> _ &ft ==# "netrw" ? "<C-^>" : ":vertical Lexplore<CR>\|:vertical resize 45<CR>"
 
+" Helper bindings for better refactoring.
+"
+" F2 to rename word under cursor.
+nnoremap <silent><nowait> <F2> :CocCommand document.renameCurrentWord<CR>
+
 
 " Leader key remaps
 " Look up visual selection in Dash (in dataset according to filetype)
@@ -240,6 +266,10 @@ nnoremap <silent><nowait> <leader>D <Esc>:Dash!<CR>
 " Space-Wincmd
 nnoremap <silent><nowait> <leader>w <C-w>
 nnoremap <silent><nowait> <leader>q <C-w>q
+
+nnoremap <silent><nowait> <leader>Q :qa!<CR>
+
+nnoremap <silent> fzf :Ag<CR>
 
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -286,11 +316,11 @@ augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
+" nmap <leader>ac  <Plug>(coc-codeaction)
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
