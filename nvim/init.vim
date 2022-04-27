@@ -12,8 +12,11 @@ set fileencodings=utf-8
 " Initialize autocmd
 autocmd!
 
-let g:python_host_prog = '/Users/axynos/.pyenv/versions/neovim2/bin/python'
-let g:python3_host_prog = '/Users/axynos/.pyenv/versions/neovim3/bin/python'
+" Set up python for nvim using virtualenv first
+" https://github.com/deoplete-plugins/deoplete-jedi/wiki/Setting-up-Python-for-Neovim#using-virtual-environments
+" Python2 disabled for Apple Silicon, not sure I need it for anything.
+" let g:python_host_prog = '.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '.pyenv/versions/neovim3/bin/python'
 
 " Make netrw have a tree view
 let g:netrw_liststyle = 3

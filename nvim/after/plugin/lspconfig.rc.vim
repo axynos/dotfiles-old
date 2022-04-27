@@ -13,24 +13,24 @@ local coq = require "coq"
 
 local name = "sumneko_lua"
 
-local function get_system_name()
-  if vim.fn.has("mac") == 1 then
-    return "macOS"
-  elseif vim.fn.has("unix") == 1 then
-    return "Linux"
-  elseif vim.fn.has('win32') == 1 then
-    return "Windows"
-  else
-    print("Unsupported system for sumneko")
-  end
-end
+-- local function get_system_name()
+--   if vim.fn.has("mac") == 1 then
+--     return "macOS"
+--   elseif vim.fn.has("unix") == 1 then
+--     return "Linux"
+--   elseif vim.fn.has('win32') == 1 then
+--     return "Windows"
+--   else
+--     print("Unsupported system for sumneko")
+--   end
+-- end
 
-local system_name = get_system_name()
+-- local system_name = get_system_name()
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
-local sumneko_root_path = "/Users/axynos/Development/tools/lua-language-server"
-local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+local sumneko_root_path = "/opt/homebrew/opt/lua-language-server"
+local sumneko_binary = sumneko_root_path.."/bin/lua-language-server"
 require('lspconfig').sumneko_lua.setup {
-  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" };
+  cmd = { sumneko_binary, "-E", sumneko_root_path .. "/libexec/main.lua" };
   settings = {
     Lua = {
       runtime = {
@@ -89,9 +89,9 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float(0, { scope = "line", border = "single" })<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', '<leader>d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 
   -- buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap('n', '<leader>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)

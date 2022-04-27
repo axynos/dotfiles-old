@@ -7,7 +7,8 @@ Plug 'tpope/vim-surround' " Surround text object
 Plug 'chaoren/vim-wordmotion' " Adds more word motions to allow better pascal case etc navigation.
 Plug 'wellle/targets.vim' " Adds additional targets
 Plug 'tpope/vim-fugitive' " Git in vim
-Plug 'tpope/vim-commentary' " Helps with commenting out lines, blocks etc
+" Plug 'tpope/vim-commentary' " Helps with commenting out lines, blocks etc
+Plug 'numToStr/Comment.nvim' " Comments using treesitter
 Plug 'tpope/vim-repeat' " Enables plugin repeating
 Plug 'airblade/vim-gitgutter' " Git status in linenr column
 Plug 'tpope/vim-vinegar' " Modifications to netrw to make it more usable.
@@ -35,6 +36,7 @@ Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+Plug 'JoosepAlviste/nvim-ts-context-commentstring' " Allows Comment.nvim in JSX
 " Plug 'nvim-treesitter/playground'
 
 " Rainbow brackets using treesitter
@@ -52,6 +54,8 @@ Plug 'lukas-reineke/indent-blankline.nvim'
 
 " Complete pairs using treesitter.
 Plug 'windwp/nvim-autopairs'
+
+Plug 'mattn/emmet-vim'
 
 " Highlight node under cursor using treesitter.
 Plug 'RRethy/vim-illuminate'

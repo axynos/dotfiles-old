@@ -155,26 +155,26 @@ ins_left {
   color = {fg = colors.violet, gui = 'bold'}
 }
 
-ins_left {
-  -- filesize component
-  function()
-    local function format_file_size(file)
-      local size = vim.fn.getfsize(file)
-      if size <= 0 then return '' end
-      local sufixes = {'b', 'k', 'm', 'g'}
-      local i = 1
-      while size > 1024 do
-        size = size / 1024
-        i = i + 1
-      end
-      return string.format('%.1f%s', size, sufixes[i])
-    end
-    local file = vim.fn.expand('%:p')
-    if string.len(file) == 0 then return '' end
-    return format_file_size(file)
-  end,
-  condition = conditions.buffer_not_empty
-}
+-- ins_left {
+--   -- filesize component
+--   function()
+--     local function format_file_size(file)
+--       local size = vim.fn.getfsize(file)
+--       if size <= 0 then return '' end
+--       local sufixes = {'b', 'k', 'm', 'g'}
+--       local i = 1
+--       while size > 1024 do
+--         size = size / 1024
+--         i = i + 1
+--       end
+--       return string.format('%.1f%s', size, sufixes[i])
+--     end
+--     local file = vim.fn.expand('%:p')
+--     if string.len(file) == 0 then return '' end
+--     return format_file_size(file)
+--   end,
+--   condition = conditions.buffer_not_empty
+-- }
 
 ins_left {'filetype', colored = true}
 
@@ -248,23 +248,24 @@ ins_right {
   right_padding = 0
 }
 
-ins_right {
-  'o:encoding', -- option component same as &encoding in viml
-  upper = true, -- I'm not sure why it's upper case either ;)
-  condition = conditions.hide_in_width,
-  color = {fg = colors.green, gui = 'bold'},
-  left_padding = 1,
-  right_padding = 0
-}
+-- ins_right {
+--   'o:encoding', -- option component same as &encoding in viml
+--   upper = true, -- I'm not sure why it's upper case either ;)
+--   condition = conditions.hide_in_width,
+--   color = {fg = colors.green, gui = 'bold'},
+--   left_padding = 1,
+--   right_padding = 0
+-- }
 
-ins_right {
-  'fileformat',
-  upper = true,
-  icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
-  color = {fg = colors.green, gui = 'bold'},
-  left_padding = 1,
-  right_padding = 0
-}
+
+-- ins_right {
+--   'fileformat',
+--   upper = true,
+--   icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+--   color = {fg = colors.green, gui = 'bold'},
+--   left_padding = 1,
+--   right_padding = 0
+-- }
 
 ins_right {
   function() return '▊' end,

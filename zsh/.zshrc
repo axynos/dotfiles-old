@@ -11,7 +11,9 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to display red dots whilst waiting for completion.
 COMPLETION_WAITING_DOTS="true"
 
-	# Command history timestamp format.
+DISABLE_AUTO_TITLE="true"
+
+# Command history timestamp format.
 # Comment out to disable history timestamps.
 # HIST_STAMPS="dd/mm/yyyy"
 
@@ -46,7 +48,7 @@ alias cls='clear'
 
 # Cat aliases
 alias cat='bat'                   # switch out cat for bat (syntax highlighting in cat)
-alias imgcat='~/cli-tools/imgcat' # show images in compatible consoles
+alias icat='kitty +kitten icat'   # show images in kitty terminal, requires imagemagick
 
 # Fast access to common dotfiles
 alias zshconf='nvim ~/.zshrc'
@@ -78,6 +80,9 @@ alias please='sudo!!'
 
 alias luamake=/Users/axynos/Development/tools/lua-language-server/3rd/luamake/luamake
 
+alias dev='cd ~/Development/'
+alias gradlew='./gradlew'
+
 # Faster file browsing.
 # Reference: https://youtu.be/eLEo4OQ-cuQ?t=490
 # Use lf to switch directories and bind it to ctrl-o
@@ -105,20 +110,16 @@ else
   export EDITOR='nvim'
 fi
 
-export PATH="$HOME/.jenv/bin:$PATH"
-export PATH="$PATH:/Users/axynos/.local/bin"
-export PATH="/usr/local/opt/libpq/bin:$PATH"
-export PATH="$HOME/Development/tools/cli:$PATH"
-# export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
-# export LDFLAGS="-L/usr/local/opt/tcl-tk/lib"
-# export CPPFLAGS="-I/usr/local/opt/tcl-tk/include"
-export PKG_CONFIG_PATH="/usr/local/opt/tcl-tk/lib/pkgconfig"
-export PYTHON_CONFIGURE_OPTS="--with-tcltk-includes='-I$(brew --prefix tcl-tk)/include' \
-                              --with-tcltk-libs='-L$(brew --prefix tcl-tk)/lib -ltcl8.6 -ltk8.6'"
 
 _evalcache thefuck --alias
+
+eval "$(pyenv init -)"
 eval "$(pyenv init --path)"
 eval "$(pyenv virtualenv-init -)"
 # _evalcache jenv init -
+eval "$(jenv init -)"
 
-clear
+export JAVA_HOME="/opt/homebrew/opt/openjdk@11"
+
+
+# clear

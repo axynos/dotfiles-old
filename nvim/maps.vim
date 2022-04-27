@@ -70,6 +70,9 @@ nnoremap <silent> <leader><leader>j :split<CR> <C-w>j :Explore<CR>
 nnoremap <silent> <leader><leader>k :split<CR> :Explore<CR>
 nnoremap <silent> <leader><leader>l :vsplit<CR> <C-w>l :Explore<CR>
 
+" Add leader-based shortcut for emmet
+nmap <silent> <leader><leader>e <C-y>,
+
 " Autocomplete
 " Use <Tab> and <S-Tab> to navigate through popup menu
 " Note S-Tab in insert mode is mapped to backspace.
