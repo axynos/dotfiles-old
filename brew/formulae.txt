@@ -1,0 +1,17 @@
+bat
+eddieantonio/eddieantonio/imgcat
+fd
+glow
+go
+gradle
+imagemagick
+jenv
+lf
+lua-language-server
+neovim
+openjdk@11
+pnpm
+pyenv
+redis
+ripgrep
+thefuck
